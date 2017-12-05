@@ -313,5 +313,5 @@ while True:
                     screen.blit(fonteFlutuante.render('Som On', True, preto), (820, 60))
                 else:
                     screen.blit(fonteFlutuante.render('Som Off', True, preto), (820, 60))
-    screen.blit(fontAutor.render('Cleber Alessandro © 2017', True, preto), (20, 700))
+    
     pygame.display.flip()
