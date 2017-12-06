@@ -3,6 +3,7 @@ from random import randint
 
 import pygame.gfxdraw
 
+#inicia o Pygame e as Fonts
 pygame.init()
 pygame.font.init()
 
@@ -10,6 +11,7 @@ tamanho = [900, 600]
 screen = pygame.display.set_mode(tamanho, 0, 32)
 pygame.display.set_caption("What's Color?")
 
+#cores RGB
 branco = (255, 255, 255)
 azulClaro = (172, 245, 245)
 amarelo = (255, 255, 0)
@@ -21,62 +23,76 @@ roxo = (209, 95, 238)
 rosa = (255, 20, 147)
 cinza = (169, 169, 169)
 
+#lista das cores e nome das cores
 cores = [azul, rosa, roxo, preto, verde, cinza, amarelo, vermelho]
 coresNome = ['Azul', 'Rosa', 'Roxo', 'Preto', 'Verde', 'Cinza', 'Amarelo', 'Vermelho']
 
+#escolhe randomicamente uma cor e um nome da cor
 corEscolhida = randint(0, 7)
 nomeEscolhido = randint(0, 7)
 
+#carrega a imagem do botão 'verde' e faz o seu 'hitbox'
 check = pygame.image.load('./assets/images/check.png').convert_alpha()
 checkPequeno = pygame.transform.scale(check, (60, 60))
 checkPos = [300, 490]
 checkRect = Rect(checkPos, (60, 60))
 
+#carrega a imagem do botão 'vermelho' e faz o seu 'hitbox'
 negativo = pygame.image.load('./assets/images/negativo.png').convert_alpha()
 negativoPequeno = pygame.transform.scale(negativo, (60, 60))
 negativoPos = [540, 490]
 negativoRect = Rect(negativoPos, (60, 60))
 
+#carrega a imagem do botão 'play' e faz o seu 'hitbox'
 play = pygame.image.load('./assets/images/play.png')
 playPequeno = pygame.transform.scale(play, (70, 70))
 playPos = [420, 480]
 playRect = Rect(playPos, (70, 70))
 
+#carrega a imagem do botão de 'ajuda' e faz o seu 'hitbox'
 ajuda = pygame.image.load('./assets/images/help.png').convert_alpha()
 ajudaPequeno = pygame.transform.scale(ajuda, (40, 40))
 ajudaPos = [800, 20]
 ajudaRect = Rect(ajudaPos, (40, 40))
 
+#carrega a imagem do botão 'voltar' e faz o seu 'hitbox'
 voltar = pygame.image.load('./assets/images/voltar.png').convert_alpha()
 voltarPequeno = pygame.transform.scale(voltar, (60, 60))
 voltarPos = [20, 20]
 voltarRect = Rect(voltarPos, (60, 60))
 
+#carrega a imagem do botão 'som ligado' e faz o seu 'hitbox'
 muteOff = pygame.image.load('./assets/images/muteoff.png').convert_alpha()
 muteOffPequeno = pygame.transform.scale(muteOff, (40, 40))
 muteOffPos = [850, 20]
 muteOffRect = Rect(muteOffPos, (40, 40))
 
+#carrega a imagem do botão 'som desligado'
 muteOn = pygame.image.load('./assets/images/muteon.png').convert_alpha()
 muteOnPequeno = pygame.transform.scale(muteOn, (40, 40))
 
+#carrega a imagem do logo 'What's Color' verde e faz o seu 'hitbox'
 logo1 = pygame.image.load('./assets/images/logo1.png').convert_alpha()
 logoRect1 = logo1.get_rect()
 logoRect1.centerx = tamanho[0] / 2
 logoRect1.y = -logoRect1.height
 
+#carrega a imagem do logo com 3 circulos e faz o seu 'hitbox'
 logo2 = pygame.image.load('./assets/images/logo2.png').convert_alpha()
 logoRect2 = logo2.get_rect()
 logoRect2.centerx = tamanho[0] / 2
 logoRect2.y = logoRect2.height
 
+#carrega a imagem das instruções e faz o seu 'hitbox'
 instrucoes = pygame.image.load('./assets/images/instrucoes.png')
 
+#carrega os SFX e as músicas
 somErro = pygame.mixer.Sound('./assets/audio/homer.ogg')
 somAcerto = pygame.mixer.Sound('./assets/audio/mario.ogg')
 somJogo = pygame.mixer.Sound('./assets/audio/jogo.ogg')
 somEspera = pygame.mixer.Sound('./assets/audio/somEspera.ogg')
 
+#informa em quais canais cada som irá rodar e ajusta seus volumes
 canalJogo = pygame.mixer.Channel(2)
 canalJogo.set_volume(.2)
 canalSons = pygame.mixer.Channel(3)
@@ -84,12 +100,14 @@ canalSons.set_volume(.2)
 canalEspera = pygame.mixer.Channel(1)
 canalEspera.set_volume(.2)
 
+#carrega as Fonts usadas no jogo
 fontAutor = pygame.font.SysFont('verdana', 10, True)
 fontLetra = pygame.font.SysFont('arial', 80, True)
 fonteCrono = pygame.font.Font('./assets/game_fonts/font.TTF', 30)
 fonteHeart = pygame.font.Font('./assets/game_fonts/blacklist.ttf', 30)
 fonteFlutuante = pygame.font.Font('./assets/game_fonts/blacklist.ttf', 20)
 
+#variáveis
 acertos = 0
 erros = 0
 cena = 1
@@ -100,6 +118,7 @@ instrucao = False
 mute = True
 contMute = 0
 
+#looping das telas iniciais
 while True:
 
     screen.fill(azulClaro)
@@ -128,7 +147,7 @@ while True:
         mute = True
         contMute = 0
 
-
+    #tela de Instruções
     if cena == 0:
         screen.fill(azulClaro)
         pygame.draw.rect(screen, branco, ((145, 115), (660, 360)), 0)
@@ -145,6 +164,7 @@ while True:
         if e.type == MOUSEBUTTONDOWN and voltarRect.collidepoint(e.pos[0], e.pos[1]):
             cena = 1
 
+    #tela inicial
     if cena == 1:
         if iniciaMusica == True and mute == True:
             canalEspera.play(somEspera, -1)
@@ -173,6 +193,7 @@ while True:
         pygame.time.wait(int(1000 / 30))
         pygame.display.update()
 
+    #looping do jogo
     while cena == 2:
 
         screen.fill(azulClaro)
@@ -185,8 +206,8 @@ while True:
         if iniciaMusica == True and mute == False:
             somJogo.stop()
 
-
-        if nomeEscolhido <= 2:  # define a posição da letra conforme seu tamanho
+        # define a posição da letra (nome da cor) conforme seu tamanho
+        if nomeEscolhido <= 2:  
             pos = (380, 240)
         elif 3 <= nomeEscolhido <= 5:
             pos = (380, 240)
@@ -202,13 +223,14 @@ while True:
         segundos = str(segundos)  # tranforma a variavel 'segundos' em string para ser renderizado
         acertos = str(acertos)  # tranforma a variavel 'acertos' em string para ser renderizado
         erros = str(erros)  # tranforma a variavel 'erros' em string para ser renderizado
-
-        screen.blit(checkPequeno, checkPos)  # fixa na tela o botão verde
-        screen.blit(negativoPequeno, negativoPos)  # fixa na tela o botão vermelho
-        screen.blit(fontLetra.render(coresNome[nomeEscolhido], True, (255, 255, 255)), pos)  # fixa na tela o 'nome da cor' e a 'corRBG'
-        screen.blit(fonteCrono.render('Tempo: ' + segundos, True, preto), (5, 30))  # fixa na tela a palavra 'Tempo'
-        screen.blit(fonteCrono.render('Acertos : ' + acertos, True, preto), (640, 30))  # fixa na tela a palavra 'Acertos'
-        screen.blit(fonteCrono.render('Erros     : ' + erros, True, preto), (640, 60))  # fixa na tela a palavra 'Erros'
+        
+        #fixa na tela as imagens e as letras usadas
+        screen.blit(checkPequeno, checkPos) 
+        screen.blit(negativoPequeno, negativoPos)
+        screen.blit(fontLetra.render(coresNome[nomeEscolhido], True, (255, 255, 255)), pos) 
+        screen.blit(fonteCrono.render('Tempo: ' + segundos, True, preto), (5, 30))
+        screen.blit(fonteCrono.render('Acertos : ' + acertos, True, preto), (640, 30))
+        screen.blit(fonteCrono.render('Erros     : ' + erros, True, preto), (640, 60))
         screen.blit(fonteHeart.render('True', True, preto), (305, 555))
         screen.blit(fonteHeart.render('False', True, preto), (540, 555))
         screen.blit(fontAutor.render('Cleber Alessandro © 2017', True, preto), (720, 550))
@@ -225,10 +247,10 @@ while True:
                 else:
                     screen.blit(fonteFlutuante.render('Som Off', True, preto), (820, 60))
 
-        for e in pygame.event.get():  # evento do Pygame para fechar a tela
+        for e in pygame.event.get():  
             if e.type == QUIT:
                 exit()
-            if e.type == MOUSEBUTTONDOWN:  # evento do Pygame para cliques no mouse
+            if e.type == MOUSEBUTTONDOWN:  
                 if muteOffRect.collidepoint(e.pos[0], e.pos[1]):
                     contMute += 1
                     if contMute == 1:
@@ -242,17 +264,17 @@ while True:
                     if corEscolhida == nomeEscolhido:  # condição de acerto
                         if mute == True:
                             canalSons.play(somAcerto)
-                        acertos = int(acertos)  # transforma a variavel 'acertos' para somar na pontuação
+                        acertos = int(acertos)  # t
                         acertos += 1
                         corEscolhida = randint(0, 7)
                         nomeEscolhido = randint(0, 7)
                     else:  # condição de erro
                         if mute == True:
                             canalSons.play(somErro)
-                        erros = int(erros)  # transforma a variavel 'erros' para somar na pontuação
+                        erros = int(erros)  
                         erros += 1
                         segundos = int(
-                            segundos)  # transforma a variavel 'segundos' em INT para diminuir o tempo do cronometro
+                            segundos)  
                         segundos -= 3
                         screen.blit(fonteCrono.render('-4', True, vermelho), (130, 30))
                         pygame.display.update()
@@ -262,7 +284,7 @@ while True:
 
                 elif negativoRect.collidepoint(e.pos[0], e.pos[1]):
                     if corEscolhida == nomeEscolhido:
-                        if mute == True:     # condição de erro
+                        if mute == True:    
                             canalSons.play(somErro)
                         erros = int(erros)
                         erros += 1
@@ -272,7 +294,7 @@ while True:
                         pygame.display.update()
                         corEscolhida = randint(0, 7)
                         nomeEscolhido = randint(0, 7)
-                    else:  # condição de acerto
+                    else: 
                         if mute == True:
                             canalSons.play(somAcerto)
                         acertos = int(acertos)
@@ -290,13 +312,16 @@ while True:
                 cena = 3
                 somJogo.stop()
                 iniciaMusica = True
-
+    
+    #tela final(Game Over)
     if cena == 3:
         iniciaMusica = False
         screen.fill(azulClaro)
         screen.blit(fontLetra.render('GAME OVER', True, cores[corEscolhida]), (180, 250))
         screen.blit(fontAutor.render('Cleber Alessandro © 2017', True, preto), (720, 550))
         contFinal += 1
+        
+    #volta ao inicia do jogo
     if cena == 3 and contFinal == 5:
         pygame.time.wait(3000)
         cena = 1
